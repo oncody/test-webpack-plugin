@@ -1,0 +1,17 @@
+{
+  "name": "test-webpack-plugin",
+  "version": "1.0.0",
+  "description": "test webpack plugin",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "Cody Smith",
+  "license": "MIT",
+  "devDependencies": {
+    "html-loader": "latest",
+    "webpack": "latest",
+    "webpack-cli": "latest"
+  }
+}
