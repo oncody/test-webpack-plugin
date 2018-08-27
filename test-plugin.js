@@ -10,18 +10,18 @@ TestPlugin.prototype.apply = (compiler) => {
   console.log('Running plugin');
 
   // printStuff(compiler, 'entryOption'); // none
-  printStuff(compiler, 'afterPlugins'); // compiler
-  printStuff(compiler, 'afterResolvers'); // compiler
+  // printStuff(compiler, 'afterPlugins'); // compiler
+  // printStuff(compiler, 'afterResolvers'); // compiler
   // printStuff(compiler, 'environment'); // none
   // printStuff(compiler, 'afterEnvironment'); // none
-  printStuff(compiler, 'beforeRun'); // compiler
-  printStuff(compiler, 'run'); // compiler
-  printStuff(compiler, 'watchRun'); // compiler
+  // printStuff(compiler, 'beforeRun'); // compiler
+  // printStuff(compiler, 'run'); // compiler
+  // printStuff(compiler, 'watchRun'); // compiler
 
   // printStuff(compiler, 'normalModuleFactory'); // normalModuleFactory
   // printStuff(compiler, 'contextModuleFactory'); // contextModuleFactory
 
-  printStuff(compiler, 'compile'); // compilationParams
+  // printStuff(compiler, 'compile'); // compilationParams
 
   // Don't have access to any chunks yet
   // printStuff(compiler, 'thisCompilation'); // compilation
@@ -29,7 +29,7 @@ TestPlugin.prototype.apply = (compiler) => {
   // printStuff(compiler, 'make'); // compilation
 
   // I should uncomment afterCompile
-  // printStuff(compiler, 'afterCompile'); // compilation
+  printStuff(compiler, 'afterCompile'); // compilation
   // printStuff(compiler, 'shouldEmit'); // compilation
   // printStuff(compiler, 'emit'); // compilation
   // printStuff(compiler, 'afterEmit'); // compilation
@@ -44,9 +44,9 @@ function printStuff(compiler, hookName) {
   console.log(`Running hook: ${hookName}`);
 
   compiler.plugin(hookName, (compilation, callback) => {
-    console.log(`Actually running hook: ${hookName}`);
+      console.log(`Actually running hook: ${hookName}`);
 
-    // console.log('compilation: ' + util.inspect(compilation));
+      // console.log('compilation: ' + util.inspect(compilation));
 
       if (compilation.chunks) {
         for (let chunk of compilation.chunks) {
@@ -56,13 +56,17 @@ function printStuff(compiler, hookName) {
 
           for (let module of chunk.modulesIterable) {
             console.log(`index: ${module.index}`);
-            console.log('  chunk resource: ' + module.resource);
+            console.log('  chunk module resource: ' + module.resource);
             if (!module.id) {
               continue;
             }
 
-            console.log('  chunk resource: ' + module.resource);
-            // console.log(module);
+            if(/\.html$/.test(module.id)) {
+              compilation.assets[module.id] = createFile(module._source._value)
+            }
+
+            // console.log('module: ' + util.inspect(module));
+            console.log('  chunk module source: ' + module._source._value);
             // console.log('\n\n\n\n\n\n');
             console.log('\n');
 
@@ -84,7 +88,6 @@ function printStuff(compiler, hookName) {
           console.log('asset: ' + asset);
           // console.log('asset source: ' + compilation.assets[asset].source());
         }
-
 
         // let filelist = 'In this build:\n\n';
         // for (let filename in compilation.assets) {
@@ -108,6 +111,18 @@ function printStuff(compiler, hookName) {
       }
     }
   )
+}
+
+
+function createFile(source) {
+  return {
+    source: () => {
+      return source;
+    },
+    size: () => {
+      return source.length;
+    }
+  };
 }
 
 module.exports = TestPlugin;
