@@ -1,5 +1,8 @@
 'use strict';
 
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack');
 const TestPlugin = require('./test-plugin');
 
 module.exports = {
@@ -22,6 +25,9 @@ module.exports = {
     }
   },
   plugins: [
+    new CleanWebpackPlugin(['dist']),
+    // new HtmlWebpackPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
     new TestPlugin()
   ]
 };

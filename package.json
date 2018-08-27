@@ -4,14 +4,18 @@
   "description": "test webpack plugin",
   "main": "index.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "start": "webpack-dev-server --hot --inline --mode=development --watch-content-base --display-error-details"
   },
   "keywords": [],
   "author": "Cody Smith",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
+    "clean-webpack-plugin": "latest",
+    "html-webpack-plugin": "latest",
     "html-loader": "latest",
     "webpack": "latest",
-    "webpack-cli": "latest"
+    "webpack-cli": "latest",
+    "webpack-dev-server": "latest"
   }
 }

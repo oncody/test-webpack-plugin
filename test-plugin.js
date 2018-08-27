@@ -29,8 +29,8 @@ TestPlugin.prototype.apply = (compiler) => {
   // printStuff(compiler, 'make'); // compilation
 
   // I should uncomment afterCompile
-  printStuff(compiler, 'afterCompile'); // compilation
-  // printStuff(compiler, 'shouldEmit'); // compilation
+  // printStuff(compiler, 'afterCompile'); // compilation
+  printStuff(compiler, 'shouldEmit'); // compilation
   // printStuff(compiler, 'emit'); // compilation
   // printStuff(compiler, 'afterEmit'); // compilation
 
@@ -48,27 +48,29 @@ function printStuff(compiler, hookName) {
 
       // console.log('compilation: ' + util.inspect(compilation));
 
+      // console.log('compilation dependencies: ' + util.inspect(compilation.fileDependencies));
+
       if (compilation.chunks) {
         for (let chunk of compilation.chunks) {
-          console.log('chunk id: ' + chunk.id);
+          // console.log('chunk id: ' + chunk.id);
           console.log('chunk ids: ' + chunk.ids);
           // console.log(chunk);
 
           for (let module of chunk.modulesIterable) {
-            console.log(`index: ${module.index}`);
-            console.log('  chunk module resource: ' + module.resource);
+            // console.log(`index: ${module.index}`);
+            // console.log('  chunk module resource: ' + module.resource);
             if (!module.id) {
               continue;
             }
 
-            if(/\.html$/.test(module.id)) {
+            if (/\.html$/.test(module.id)) {
               compilation.assets[module.id] = createFile(module._source._value)
             }
 
             // console.log('module: ' + util.inspect(module));
-            console.log('  chunk module source: ' + module._source._value);
+            // console.log('  chunk module source: ' + module._source._value);
             // console.log('\n\n\n\n\n\n');
-            console.log('\n');
+            // console.log('\n');
 
             if (module.fileDependencies) {
               for (let filepath of module.fileDependencies) {
@@ -104,8 +106,8 @@ function printStuff(compiler, hookName) {
       }
 
       console.log(`Done running: ${hookName}`);
-      console.log('');
-      console.log('');
+      // console.log('');
+      // console.log('');
       if (callback && typeof callback === 'function') {
         callback();
       }
