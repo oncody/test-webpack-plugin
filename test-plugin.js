@@ -30,14 +30,16 @@ TestPlugin.prototype.apply = (compiler) => {
 
   // I should uncomment afterCompile
   // printStuff(compiler, 'afterCompile'); // compilation
-  printStuff(compiler, 'shouldEmit'); // compilation
-  // printStuff(compiler, 'emit'); // compilation
+  // printStuff(compiler, 'shouldEmit'); // compilation
+  printStuff(compiler, 'emit'); // compilation
   // printStuff(compiler, 'afterEmit'); // compilation
 
   // printStuff(compiler, 'done'); // stats
   // printStuff(compiler, 'failed'); // error
   // printStuff(compiler, 'invalid'); // fileName, changeTime
   // printStuff(compiler, 'watchClose'); // none
+
+  printSTuff()
 };
 
 function printStuff(compiler, hookName) {
@@ -45,9 +47,7 @@ function printStuff(compiler, hookName) {
 
   compiler.plugin(hookName, (compilation, callback) => {
       console.log(`Actually running hook: ${hookName}`);
-
       // console.log('compilation: ' + util.inspect(compilation));
-
       // console.log('compilation dependencies: ' + util.inspect(compilation.fileDependencies));
 
       if (compilation.chunks) {
@@ -56,15 +56,26 @@ function printStuff(compiler, hookName) {
           console.log('chunk ids: ' + chunk.ids);
           // console.log(chunk);
 
+          for (let filename of chunk.files) {
+            console.log('chunk filename: ' + filename);
+          }
+
           for (let module of chunk.modulesIterable) {
-            // console.log(`index: ${module.index}`);
-            // console.log('  chunk module resource: ' + module.resource);
             if (!module.id) {
               continue;
             }
 
+            // console.log(`index: ${module.index}`);
+            console.log('  module id: ' + module.id);
+            // console.log('  module resource: ' + module.resource);
+            // console.log('    module hash: ' + module.hash);
+            // console.log('    module rendered hash: ' + module.renderedHash);
+            // console.log('    module build hash: ' + module._buildHash);
+
             if (/\.html$/.test(module.id)) {
-              compilation.assets[module.id] = createFile(module._source._value)
+              let filename = module.id;
+              filename = filename.replace(/^\.\//, '');
+              // compilation.assets[filename] = createFile(module._source._value)
             }
 
             // console.log('module: ' + util.inspect(module));
@@ -72,20 +83,20 @@ function printStuff(compiler, hookName) {
             // console.log('\n\n\n\n\n\n');
             // console.log('\n');
 
-            if (module.fileDependencies) {
-              for (let filepath of module.fileDependencies) {
-                console.log('  chunk file dependency: ' + filepath);
-              }
-            }
+            // if (module.fileDependencies) {
+            //   for (let filepath of module.fileDependencies) {
+            //     console.log('  file dependency: ' + filepath);
+            //   }
+            // }
+
           }
 
-          for (let filename of chunk.files) {
-            console.log('  chunk filename: ' + filename);
-          }
         }
       }
 
       if (compilation.assets) {
+        console.log(util.inspect(compilation.assets));
+
         for (let asset in compilation.assets) {
           console.log('asset: ' + asset);
           // console.log('asset source: ' + compilation.assets[asset].source());

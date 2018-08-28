@@ -8,7 +8,7 @@ const TestPlugin = require('./test-plugin');
 module.exports = {
   entry: [
     './index.js',
-    './index.html'
+    // './index.html'
   ],
   mode: 'development',
   module: {
@@ -26,7 +26,7 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),
-    // new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({template: './index.html'}),
     new webpack.HotModuleReplacementPlugin(),
     new TestPlugin()
   ]

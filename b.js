@@ -1,5 +1,5 @@
 if(module.hot) {
-  module.hot.accept();
+  // module.hot.accept();
 }
 
-console.log('hells!o!s!');
+// console.log('hells!o!s!');
